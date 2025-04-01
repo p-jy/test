@@ -1,6 +1,5 @@
 package kr.kh.tmp.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +13,8 @@ import kr.kh.tmp.model.vo.BoardVO;
 import kr.kh.tmp.model.vo.FileVO;
 import kr.kh.tmp.model.vo.MemberVO;
 import kr.kh.tmp.model.vo.PostVO;
+import kr.kh.tmp.pagination.Criteria;
+import kr.kh.tmp.pagination.PageMaker;
 import kr.kh.tmp.utils.UploadFileUtils;
 
 @Service
@@ -58,8 +59,8 @@ public class PostServiceImp implements PostService {
 	}
 
 	@Override
-	public List<PostVO> getPostList(Integer bo_num) {
-		return postDao.selectPostList(bo_num);
+	public List<PostVO> getPostList(Criteria cri) {
+		return postDao.selectPostList(cri);
 	}
 
 	@Override
@@ -209,5 +210,15 @@ public class PostServiceImp implements PostService {
 	@Override
 	public List<FileVO> getFileList(int po_num) {
 		return postDao.selectFileList(po_num);
+	}
+
+	@Override
+	public PageMaker getPageMaker(Criteria cri) {
+		if(cri == null) {
+			return null;
+		}
+		int totalCount = postDao.selectCountPostList(cri);
+		
+		return new PageMaker(3, cri, totalCount);
 	}
 }
