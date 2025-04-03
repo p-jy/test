@@ -31,14 +31,16 @@ public class PostController {
 	@GetMapping("/list")
 	public String list(Model model, PostCriteria cri) {
 		cri.setPerPageNum(2);
-		
 		List<PostVO> list = postService.getPostList(cri);
+		
 		List<BoardVO> boardList = postService.getBoardList();
+		
 		PageMaker pm = postService.getPageMaker(cri);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pm", pm);
+		
 		return "/post/list";
 	}
 	
